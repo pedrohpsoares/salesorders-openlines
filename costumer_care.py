@@ -1,23 +1,23 @@
 import streamlit as st
 import pandas as pd
 import io
-from datetime import datetime, date # Importação adicionada para uso explícito no cache
+from datetime import datetime, date
 from icons import *
 import altair as alt    
 
-# Configuração da página
+# configuração da página
 st.set_page_config(
     layout="wide", 
     page_title="Consulta Linhas Abertas (Atendimento)", 
     initial_sidebar_state="expanded"
 )
 
-# Caminho para o arquivo transformado (saída do transform_v5.py)
+# caminho para o arquivo transformado (saída do transform_v5.py)
 DATA_PATH = "data_transformed/data_costumer_care.xlsx"
-# Coluna chave de cliente
+# coluna chave de cliente
 COLUNA_CLIENTE_DISPLAY = 'customer_name'
 
-# --- FUNÇÃO PARA CRIAR O CARD KPI EM HTML/CSS ---
+# criação de kpi's em html/css
 def create_kpi_card(icon, title, value):
     """Gera o HTML/CSS para um card de métrica estilizado (Dark Mode)."""
     # O estilo é injetado para criar o visual de card e remover margens padrão.
@@ -56,9 +56,9 @@ def create_kpi_card(icon, title, value):
     """
     return html_content
 
-# --- FUNÇÕES BÁSICAS ---
+# --- funções básicas ---
 
-@st.cache_data(ttl=600) # Adicionando TTL para garantir que ele atualize a cada 10 min
+@st.cache_data(ttl=600) # adicionando TTL para garantir que ele atualize a cada 10 min
 def load_data(path):
     """Carrega o DataFrame final transformado."""
     try:
@@ -124,10 +124,7 @@ def convert_df_to_excel(df_to_convert, sheet_name='Extrato_Aberto'):
         df_to_convert.to_excel(writer, index=False, sheet_name=sheet_name_with_date)
     return output.getvalue()
 
-
-# ==============================================================================
 # 1. CARREGAMENTO E FILTRO DE CLIENTE
-# ==============================================================================
 
 df = load_data(DATA_PATH)
 
@@ -204,9 +201,7 @@ st.sidebar.caption(f"{list_icon} Total de registros na base: **{total_registros_
 st.sidebar.caption(f"{user_icon} Total de clientes ativos: **{total_clientes_distintos}**", unsafe_allow_html=True)
 # ------------------------------------------
 
-# ==============================================================================
 # 2. VISUALIZAÇÃO E DOWNLOAD
-# ==============================================================================
 
 if cliente_selecionado and cliente_selecionado != 'Selecione um Cliente':
     
